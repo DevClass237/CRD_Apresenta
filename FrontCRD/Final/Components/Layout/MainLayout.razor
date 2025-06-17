@@ -1,0 +1,35 @@
+﻿@inherits LayoutComponentBase
+@inject NavigationManager Navigation
+
+
+<div class="page">
+
+    <NavMenu /> 
+
+    <div class="container-temporario"> 
+        <NavLink href="/LoginsTemp" class="botao-login-temporario" title="Logins temporários">
+            <i class="fas fa-user-clock"></i>
+        </NavLink>
+    </div> 
+    
+    <main>
+
+        <article class="content px-4">
+            <div style="align-self:center; align-items:center;" class="Logo-branca-home">
+                <img src="/Imagens/LogoSenaiBranco..png" />
+            </div>
+            @Body
+            
+        </article>
+    </main>
+</div>
+
+<div id="blazor-error-ui">
+    An unhandled error has occurred.
+    <a href="" class="reload">Reload</a>
+    <a class="dismiss">🗙</a>
+</div>
+
+@code{
+
+}

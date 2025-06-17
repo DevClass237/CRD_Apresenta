@@ -1,0 +1,126 @@
+﻿@page "/CadastroTurmas"
+@using Final.Components.Pages.Docentes
+@using PocheteAPI.Services
+@using PocheteAPI.DTO
+@layout Final.Components.Layout.DocenteLayout
+@rendermode InteractiveServer
+
+<div class="popup-overlay">
+    <div class="popup-content-retirar">
+        <div class="popup-header">
+            <img src="/Imagens/LogoSenaiBranco..png" class="logo-ajustada" alt="Logo Senai" />
+            <NavLink href="/TabelaDocente" class="nav-link fechar">
+                <i class="fas fa-times" style="color: ghostwhite;"></i>
+            </NavLink>
+        </div>
+
+        <div class="popup-center-text">
+            <div class="texto-retirar-chave">
+                Registrar<br />Turma
+            </div>
+        </div>
+
+        <div class="container-style-registrar">
+            <EditForm Model="turmaModel" OnValidSubmit="RegistrarTurmaAsync" FormName="TurmaForm">
+                <DataAnnotationsValidator />
+                <ValidationSummary />
+
+                <InputText class="inp-turma" id="identificador" @bind-Value="turmaModel.Identificador" placeholder="Identificador da Turma" />
+                <ValidationMessage For="@(() => turmaModel.Identificador)" />
+
+                <InputSelect class="inp-turma" id="turno" @bind-Value="turmaModel.Turno">
+                    <option value="">Selecione o turno...</option>
+                    <option value="Matutino">Matutino</option>
+                    <option value="Vespertino">Vespertino</option>
+                    <option value="Noturno">Noturno</option>
+                </InputSelect>
+                <ValidationMessage For="@(() => turmaModel.Turno)" />
+
+                <InputSelect class="inp-turma" id="curso" @bind-Value="turmaModel.CursoId">
+                    <option value="">Selecione um curso...</option>
+                    @foreach (var curso in cursos)
+                    {
+                        <option value="@curso.Id">@curso.Nome</option>
+                    }
+                </InputSelect>
+                <ValidationMessage For="@(() => turmaModel.CursoId)" />
+
+                <button class="btn-primary" type="submit">Registrar</button>
+            </EditForm>
+        </div>
+
+        @if (!string.IsNullOrWhiteSpace(mensagemErro))
+        {
+            <div class="alerta">@mensagemErro</div>
+        }
+    </div>
+</div>
+
+<TabelaDocentes />
+
+@code {
+    private TurmaModel turmaModel = new TurmaModel();
+    private List<CursosDTO> cursos = new List<CursosDTO>();
+    private string mensagemErro;
+
+    [Inject]
+    private CursoService CursoService { get; set; } = default!;
+
+    [Inject]
+    private TurmaService TurmaService { get; set; } = default!;
+
+    [Inject]
+    private IJSRuntime JS { get; set; } = default!;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Carregar cursos existentes para o dropdown
+        cursos = await CursoService.ListarAsync();
+    }
+
+    private async Task RegistrarTurmaAsync()
+    {
+        if (string.IsNullOrWhiteSpace(turmaModel.Identificador) || string.IsNullOrWhiteSpace(turmaModel.Turno) || turmaModel.CursoId == 0)
+        {
+            mensagemErro = "Por favor, preencha todos os campos obrigatórios!";
+            return;
+        }
+
+        try
+        {
+            var turmaDto = new TurmasDTO
+            {
+                Identificador = turmaModel.Identificador,
+                Turno = turmaModel.Turno,
+                CursoId = turmaModel.CursoId
+            };
+
+            // Enviar para o serviço de cadastro de turma
+            var (sucesso, resposta) = await TurmaService.CadastrarAsync(turmaDto);
+
+            if (sucesso)
+            {
+                mensagemErro = "";
+                await JS.InvokeVoidAsync("alert", resposta);
+                turmaModel = new TurmaModel(); // Limpa o formulário
+                StateHasChanged(); // Atualiza a interface
+            }
+            else
+            {
+                mensagemErro = resposta;
+            }
+        }
+        catch (Exception ex)
+        {
+            mensagemErro = $"Ocorreu um erro: {ex.Message}";
+        }
+    }
+
+    // Classe interna para o modelo do formulário
+    public class TurmaModel
+    {
+        public string Identificador { get; set; } = string.Empty;
+        public string Turno { get; set; } = string.Empty;
+        public int CursoId { get; set; } = 0; // ID do curso selecionado
+    }
+}

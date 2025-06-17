@@ -1,0 +1,77 @@
+﻿@page "/login-usuario"
+@using PocheteAPI.Services;
+@using PocheteAPI.DTO;
+@rendermode InteractiveServer
+@inject UsuarioService UsuarioService
+@inject IJSRuntime JS
+@inject NavigationManager navigationManager
+
+@layout Components.Layout.LoginLayout
+
+<div class="background-login">
+    <div class="background-inicio-content">
+        <div class="container-style">
+
+            <div class="Logo-branca">
+                <img src='/Imagens/LogoSenaiBranco.png' />
+                <p class="text-center text-white text-3xl mt-2">Login</p>
+            </div>
+            <InputText class="text-input" id="nome" @bind-Value="nome" placeholder="Digite seu Nome" />
+            <InputText class="text-input" id="senha" @bind-Value="senha" placeholder="Digite sua Senha" />
+
+            <button type="button" class="btn-primary" @onclick="LoginCadastrarUsuario" disabled="@carregando">
+                @(carregando ? "Enviando..." : "Cadastrar")
+            </button>
+
+            @if (!string.IsNullOrEmpty(mensagem)) {
+                <p style="color:@(mensagem.Contains("sucesso") ? "green" : "red")">@mensagem</p>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    private string? nome;
+    private string? senha;
+    private string? mensagem;
+
+    private bool carregando = false;
+
+    private async Task LoginCadastrarUsuario() {
+        await JS.InvokeVoidAsync("console.log", "Função CadastrarUsuario chamada");
+        Console.WriteLine("CadastrarUsuario chamado");
+        carregando = true;
+        mensagem = string.Empty;
+
+        if (string.IsNullOrWhiteSpace(nome) || string.IsNullOrWhiteSpace(senha)) {
+            mensagem = "Preencha todos os campos.";
+            carregando = false;
+            return;
+        }
+
+        //1. Tentar fazer login
+        var (sucessoLogin, usuario, msgLogin) = await UsuarioService.LoginAsync(nome!, senha!);
+
+        var novoUsuario = new UsuarioDTO {
+                Nome = nome!,
+                Senha = senha!
+            };
+
+        var (sucesso, msg) = await UsuarioService.CadastrarAsync(novoUsuario);
+
+        if (sucesso) {
+            mensagem = msg;
+            nome = string.Empty;
+            senha = string.Empty;
+        }
+        else {
+            mensagem = msg;
+        }
+
+        carregando = false;
+        StateHasChanged();
+        await Task.Delay(3000);
+        mensagem = string.Empty;
+        StateHasChanged();
+    }
+}

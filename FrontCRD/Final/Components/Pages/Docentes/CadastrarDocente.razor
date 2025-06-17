@@ -1,0 +1,108 @@
+﻿@page "/CadastroDocentes"
+@using PocheteAPI.Services
+@using PocheteAPI.DTO 
+@using Final.Components.Pages.Docentes 
+@layout Final.Components.Layout.DocenteLayout
+@rendermode InteractiveServer
+
+<div class="popup-overlay">
+    <div class="popup-content-professor">
+        <div class="popup-header">
+            <img src="/Imagens/LogoSenaiBranco..png" class="logo-ajustada" alt="Logo Senai" />
+            <NavLink href="/TabelaDocente" class="nav-link fechar">
+                <i class="fas fa-times" style="color: ghostwhite;"></i>
+            </NavLink>
+        </div>
+
+        <div class="popup-center-text">
+            <div class="texto-registrar-login">
+                Registrar<br />Docente
+            </div>
+        </div>
+
+        <div class="container-style-professor">
+            @* Usando EditForm para validação e submissão *@
+            <EditForm Model="professorModel" OnValidSubmit="RegistrarProfessorAsync" FormName="ProfessorForm">
+                <DataAnnotationsValidator />
+                
+                <InputText class="text-input-Professor" id="matricula" @bind-Value="professorModel.Matricula" placeholder="Matrícula" />
+                <InputText class="text-input-Professor" id="nome" @bind-Value="professorModel.Nome" placeholder="Nome" />
+             
+                @* <InputSelect @bind-Value="professorModel.Cargo" id="Cargo" class="estilo-input-professor">
+                    <option value="">Selecione um cargo...</option>
+                    <option value="Professor">Professor</option>
+                    <option value="Agente">Agente</option>
+                </InputSelect> *@
+
+                <button class="btn-primary" type="submit">Registrar</button>
+                
+                @* Exibe mensagens de erro de validação *@
+                <ValidationSummary />
+            </EditForm>
+        </div>
+    </div>
+</div>
+<TabelaDocentes />
+
+@code {
+    // Modelo para guardar os dados do formulário
+    private ProfessorModel professorModel = new ProfessorModel();
+
+    // Injeção de dependências
+    [Inject]
+    private ProfessorService ProfessorService { get; set; } = default!;
+
+    [Inject]
+    private IJSRuntime JS { get; set; } = default!;
+
+    private async Task RegistrarProfessorAsync()
+    {
+        // A validação agora é tratada pelo EditForm e DataAnnotations, mas uma checagem extra não faz mal.
+        if (string.IsNullOrWhiteSpace(professorModel.Matricula) || string.IsNullOrWhiteSpace(professorModel.Nome))
+        {
+            await JS.InvokeVoidAsync("alert", "Matrícula e Nome são obrigatórios!");
+            return;
+        }
+
+        try
+        {
+            // Cria o objeto DTO para enviar para a API
+            var professorDto = new ProfessoresDTO
+            {
+                Matricula = int.Parse(professorModel.Matricula),
+                Nome = professorModel.Nome,
+            };
+
+            // Usa o serviço para cadastrar o professor
+            var (sucesso, mensagem) = await ProfessorService.CadastrarAsync(professorDto);
+
+            if (sucesso)
+            {
+                await JS.InvokeVoidAsync("alert", mensagem);
+                professorModel = new ProfessorModel(); // Limpa o formulário
+                StateHasChanged(); // Atualiza a interface
+            }
+            else
+            {
+                await JS.InvokeVoidAsync("alert", mensagem);
+            }
+        }
+        catch (FormatException)
+        {
+            await JS.InvokeVoidAsync("alert", "A matrícula deve ser um número válido.");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message); // Log do erro para depuração
+            await JS.InvokeVoidAsync("alert", $"Ocorreu um erro inesperado: {ex.Message}");
+        }
+    }
+
+    // Classe interna para o modelo do formulário
+    public class ProfessorModel
+    {
+        public string Matricula { get; set; } = string.Empty;
+        public string Nome { get; set; } = string.Empty;
+        public string Cargo { get; set; } = string.Empty; // Campo para o dropdown
+    }
+}

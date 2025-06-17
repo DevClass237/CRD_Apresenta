@@ -1,0 +1,952 @@
+
+/*Estilo do texto da pagina CadastrarEditor*/
+.texto-cadastrar-editor {
+    font-size: 6vh; /* Ajuste o tamanho conforme necessário */
+    font-weight: bold;
+    text-align: center;
+    line-height: 1; /* Garante que "Login" fique diretamente abaixo de "Registrar" */
+    margin-top: 0.5vh; /* Espaço do cabeçalho */
+}
+/*estilo do popUp de CadastrarProfessor*/
+.popup-content-professor {
+    position: relative;
+    color: white;
+    background: #136db2; /* Fundo da div principal */
+    padding: 1vh 0.5vw 3vh 0.5vw;
+    border-radius: 0.5vh;
+    border: 0.2px solid black;
+    width: 60vh; /* Mais alto que largo */
+    height: 90vh; /* Mais alto que largo */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column; /* Alinha os itens em coluna */
+    justify-content: space-around; /* Distribui o espaço entre os itens verticalmente */
+}
+
+.estilo-input-professor {
+    background-color: #fff; /* Cor de fundo */
+    border: 1px solid #ccc; /* Borda */
+    border-radius: 4px; /* Bordas arredondadas */
+    padding: 8px 12px; /* Preenchimento interno */
+    font-size: 14px; /* Tamanho da fonte */
+    width: 100%;
+    height: 9vh;
+    box-sizing: border-box; /* Inclui bordas e preenchimento no tamanho total */
+}
+
+.container-style-professor {
+    display: flex;
+    flex-direction: column; /* Alinha os itens em coluna */
+    align-items: center; /* Centraliza os itens horizontalmente */
+    justify-content: center;
+    gap: 5vh; /* Espaço entre os inputs e o botão */
+    width: 100%; /* Ocupa a largura total do conteúdo do pop-up */
+    padding: 0 2vw; /* Preenchimento horizontal */
+
+    margin-bottom: 3vh; /* Espaço da parte inferior do pop-up */
+}
+
+/*Estilo do texto da pagina RetirarChave*/
+
+.texto-retirar-chave {
+    font-size: 5vh; /* Ajuste o tamanho conforme necessário */
+    font-weight: bold;
+    text-align: center;
+    line-height: 1; /* Garante que "Login" fique diretamente abaixo de "Registrar" */
+    margin-top: 0.5vh; /* Espaço do cabeçalho */
+}
+
+/*estilo do popUp de RetirarChave*/
+.popup-content-retirar {
+    position: relative;
+    color: white;
+    background: #136db2; /* Fundo da div principal */
+    padding: 1vh 0.5vw 3vh 0.5vw;
+    border-radius: 0.5vh;
+    border: 0.2px solid black;
+    width: 60vh; /* Mais alto que largo */
+    height: 70vh; /* Mais alto que largo */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column; /* Alinha os itens em coluna */
+    justify-content: space-around; /* Distribui o espaço entre os itens verticalmente */
+}
+
+/*Estilo do registarlogin da parte dos docentes*/
+.popup-content-registrar {
+    position: relative;
+    color: white;
+    background: #136db2; /* Fundo da div principal */
+    padding: 1vh 0.5vw 3vh 0.5vw;
+    border-radius: 0.5vh;
+    border: 0.2px solid black;
+    width: 60vh; /* Mais alto que largo */
+    height: 80vh; /* Mais alto que largo */
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column; /* Alinha os itens em coluna */
+    justify-content: space-around; /* Distribui o espaço entre os itens verticalmente */
+}
+
+.texto-registrar-login {
+    font-size: 7vh; /* Ajuste o tamanho conforme necessário */
+    font-weight: bold;
+    text-align: center;
+    line-height: 1; /* Garante que "Login" fique diretamente abaixo de "Registrar" */
+    margin-top: 0.5vh; /* Espaço do cabeçalho */
+}
+
+.container-style-registrar {
+    display: flex;
+    flex-direction: column; /* Alinha os itens em coluna */
+    align-items: center; /* Centraliza os itens horizontalmente */
+    justify-content: center;
+    gap: 7vh; /* Espaço entre os inputs e o botão */
+    width: 100%; /* Ocupa a largura total do conteúdo do pop-up */
+    padding: 0 2vw; /* Preenchimento horizontal */
+    
+    margin-bottom: 3vh; /* Espaço da parte inferior do pop-up */
+    
+}
+/*----------------------------------*/
+/*Status de carregamento*/
+.loader {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2vh;
+}
+
+.dot {
+    width: 2vh;
+    height: 2vh;
+    border-radius: 50%;
+    background-color: gray;
+    animation: pulse 1.2s infinite;
+}
+
+    .dot:nth-child(1) {
+        animation-delay: 0s;
+    }
+
+    .dot:nth-child(2) {
+        animation-delay: 0.2s;
+    }
+
+    .dot:nth-child(3) {
+        animation-delay: 0.4s;
+    }
+
+    .dot:nth-child(4) {
+        animation-delay: 0.6s;
+    }
+
+@keyframes pulse {
+    0%, 100% {
+        background-color: gray;
+        transform: scale(1);
+    }
+
+    50% {
+        background-color: white;
+        transform: scale(1.3);
+    }
+}
+/*-------------------*/
+/*PopUp do Cadastrar Token */
+.logo-ajustada {
+    height: 4vh !important;
+    width: auto;
+    margin: 0;
+    padding: 0;
+    display: block;
+}
+
+.nav-link.fechar {
+    align-self: flex-start;
+    margin-left: auto;
+    padding: 0.5vh 0.5vw;
+    width: 4vh; /* Largura da bolinha */
+    height: 4vh; /* Altura da bolinha */
+    border-radius: 50%; /* Forma circular */
+    color: ghostwhite;
+    background-color: red;
+
+    display: flex; /* CENTRALIZA */
+    align-items: center; /* Alinha verticalmente */
+    justify-content: center; /* Alinha horizontalmente */
+}
+
+.popup-content {
+    position: relative;
+    color: white;
+    background: #136db2;
+    padding: 1vh 0.5vw 3vh 0.5vw; /* topo, lados, baixo, lados */
+    border-radius: 0.5vh;
+    border: 0.2px solid black;
+    width: 110vh;
+    height: 60vh;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+/* Header com logo à esquerda e fechar à direita */
+.popup-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    padding: 0.5vh 0.2vw 0 0.2vw;
+    font-size: 2.5vh;
+}
+
+/* Centralizar o texto no meio do popup */
+.popup-center-text {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    flex: 1;
+}
+
+.texto-cadastrar-token {
+    font-size: 9vh;
+    font-weight:bold;
+    margin: 0;
+}
+
+/* Footer com imagem no canto inferior direito */
+.popup-footer {
+    position: absolute;
+    bottom: 1vh;
+    right: 1vh;
+}
+
+.tag-img {
+    height: 24vh; /* ajuste conforme necessário */
+    width: auto;
+}
+
+/*---------------------*/
+
+/*Classes de cadastrar token*/
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    backdrop-filter: blur(6px);
+    background-color: rgba(0, 0, 0, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+}
+
+.blurred-content {
+    filter: blur(5px);
+    pointer-events: none;
+}
+/*-----------------------------------*/
+html {
+    font-family: 'Neo Sans Pro';
+}
+
+html, body {
+    background-color: #136db2;
+    height: 100%;
+    overflow: auto;
+    transition: all ease-in-out 0.3s;
+}
+
+
+/*TABELA */
+.body {
+    background-color: #0e5da3;
+    color: white;
+}
+
+.table-container{
+    overflow-x:auto; /*Permite que a tabela tenha scroll horizontal*/
+    margin-bottom: 5vh;/*Espaço entre o final da tabela e o fim da oagina*/
+}
+/*Estilo do cabeçalho*/
+.header-row {
+    font-size:large;
+    display: flex;/*Alinha as celulas lado a lado*/
+    background:white;
+    color:black;
+    border-radius:8px 8px 2px 2px;
+    overflow: hidden;
+    
+}
+
+/*Estilo das celulas do cabeçalho individualmente*/
+.header-cell {
+    flex: 1; /*Faz que todas as celulas tenham a mesma largura*/
+    padding: 1vh;
+    text-align: center;
+    border-right: 1px solid #34495e; /*Adiciona a separação '|' entre as celulas do cabeçalho*/
+}
+    /*Faz com que a ultima celula não tenha a separação '|'*/
+    .header-cell:last-child {
+        border-right: none;
+    }
+
+/*Corpo da tabela*/
+.table-body {
+    display: grid; /* Usa o grid para definir a quantidade de colunas de cada linha*/
+    grid-template-columns: repeat(5, 1fr); /*Define a quantidade de colunas*/
+    gap: 2vh; /*espaçamento entre as celulas*/
+    /*define o espaçamento interno*/
+    padding-top: 2.5vh;
+    padding-bottom: 1.5vh;
+    padding-left: 1.5vh;
+    padding-right:1.5vh;
+
+    background-color: #1382d6;
+    border-radius: 2px 2px 15px 15px;
+    border: 0.5px solid white;
+}
+
+/*Linhas da tabela*/
+.body-cell {
+    background-color: #f8fafc;
+    padding: 1.5vh;
+    border-radius: 1px;
+    border: 2px solid #c4bbbb;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+    .body-cell:hover {
+        transform: translateY(-2px);/*Faz a celula celula levantar quando passa o mouse*/
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        background-color: #f0f7ff;
+    }
+
+/*O body das tabelas com 4 colunas normais + uma pequena*/
+.table-body-Login-Temporario-Pendente {
+    display: grid; /* Usa o grid para definir a quantidade de colunas de cada linha*/
+    grid-template-columns: repeat(4, 1fr)6vh; /*Define a quantidade de colunas*/
+    gap: 2vh; /*espaçamento entre as celulas*/
+    /*define o espaçamento interno*/
+    padding-top: 2.5vh;
+    padding-bottom: 1.5vh;
+    padding-left: 1.5vh;
+    padding-right: 1.5vh;
+    background-color: #1382d6;
+    border-radius: 2px 2px 15px 15px;
+    border: 0.5px solid white;
+    padding-right: 4vh;
+}
+
+/*Coluna em que o botão finalizar login está*/
+.botao-header-cell {
+    background: transparent;
+    border-right: none; /* Sem linha divisória */
+    width: 12vh;
+}
+ 
+/*body com 5 colunas normais + um mediana*/
+
+.table-body-Docente {
+    display: grid; /* Usa o grid para definir a quantidade de colunas de cada linha*/
+    grid-template-columns: repeat(6, 1fr); /*Define a quantidade de colunas*/
+    gap: 2vh; /*espaçamento entre as celulas*/
+    /*define o espaçamento interno*/
+    padding-top: 2.5vh;
+    padding-bottom: 1.5vh;
+    padding-left: 1.5vh;
+    padding-right: 1.5vh;
+    background-color: #1382d6;
+    border-radius: 2px 2px 15px 15px;
+    border: 0.5px solid white;
+}
+
+/*Coluna em que a ultima coluna está*/
+.botao-header-cell {
+    background: transparent;
+    border-right: none; /* Sem linha divisória */
+    width: 12vh;
+}
+/* Estilo base para a célula de "Retirada" */
+.retirada-cell {
+    /* Herda a borda e o box-shadow de .body-cell */
+    border: 2px solid #c4bbbb; /* Borda igual às demais */
+    font-weight: bold; /* Para dar um pouco mais de destaque ao texto */
+}
+
+/* Cores de Fundo e Letra para os Status de Retirada */
+
+/* VERDE: Docente Cadastrado Retirou */
+.retirada-verde {
+    background-color: #39b23e; /* Verde que você pediu */
+    color: rgba(0, 0, 0, 0.7); /* Preto opaco para a letra */
+}
+
+/* CINZA: Chave Não Retirada (Ninguém pegou) */
+.retirada-cinza {
+    background-color: #c8c2c2; /* Cinza que você pediu */
+    color: rgba(255, 255, 255, 0.7); /* Branco opaco para a letra */
+}
+
+/* VERMELHO: Outro Docente Retirou */
+.retirada-vermelha {
+    background-color: #cf3e16; /* Vermelho que você pediu */
+    color: rgba(0, 0, 0, 0.7); /* Preto opaco para a letra */
+}
+/*Demais componentes*/
+
+.login-layout {
+    display: flex;
+    align-items: center; /* Centraliza verticalmente */
+    justify-content: center; /* Centraliza horizontalmente */
+    min-height: 100vh; /* Ocupa toda a altura da tela */
+    width: 100vw; /* Ocupa toda a largura da tela */
+    
+}
+
+.text-input {
+    height: 9vh;
+    width: 50vh;
+    padding-left: 10px;
+    border-radius: 3px;
+    border: 2px solid transparent ;
+    font-size: 2vh;
+}
+.text-input-Professor {
+    height: 9vh;
+    width: 50vh;
+    margin-bottom: 50px;
+    padding-left: 10px;
+    border-radius: 3px;
+    border: 2px solid transparent;
+    font-size: 2vh;
+}
+.text-input:focus {
+    border-color: #cad2e3; /* Cor da borda quando em foco (quando o campo é selecionado) */
+    outline: none; /* Remove o contorno padrão do navegador */
+    /*box-shadow: 0 0 5px #232323;*/ /* Adiciona sombra para destacar */
+}
+
+.inp-turma {
+    height: 9vh;
+    width: 50vh;
+    padding-left: 10px;
+    border-radius: 3px;
+    border: 2px solid transparent;
+    font-size: 2vh;
+    margin-bottom: 20px;
+}
+
+.container-style {
+    width: 65vh;
+    height: 75vh;
+    background-color: #136db2;
+    border-radius: 17px;
+    border-color: black;
+    border-width: 0.5px;
+    border-style:solid;
+    align-content: center;
+    display: flex;
+    flex-direction: column; /* Organiza os filhos em coluna */
+    align-items: center; /* Centraliza horizontalmente (opcional) */
+    justify-content: space-between; /* Centraliza verticalmente (opcional) */
+    padding-bottom:15px;
+    padding-top:5px;
+}
+
+/*Div que tem a turno, select e data*/
+.borda-turno {
+    justify-content:space-between;
+    padding-bottom: 4vh;
+    display: flex;/* Faz a div virar uma linha*/
+}
+/*estilo da estrutura select e data*/
+.estilo-data-select {
+    padding:1vh;
+    align-content:center;
+    background-color: white;
+    border: 2px solid #fd440f;
+}
+
+/*Background somente do login*/
+.background-login {
+    position: relative;
+    min-height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+/*Foto do backgroundo do login*/
+.background-inicio-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: url('/Imagens/BackGroundInicio.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    filter: blur(6px); /* Ajuste o valor do blur conforme desejar */
+    z-index: 1;
+}
+
+/*Logo da pagina login*/
+.Logo-branca {
+    width: 22vh; /* Faz a div ocupar toda a largura disponível */
+    height: 15vh; /* Ajusta a altura da div com base na altura desejada (pode ser alterado conforme necessário) */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+
+.Logo-branca img {
+    margin-top: 10vh;
+    object-fit: contain;
+    width: 35vh;
+    position: absolute;
+}
+
+/*Logo das demais paginas*/
+.Logo-branca-home {
+    width: 100%; /* Garante que ocupe toda a linha */
+    display: flex;
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center; /* Centraliza verticalmente */
+    height: 15vh;
+    margin-top: 2vh;
+    margin-bottom: 15vh;
+}
+.Logo-branca-home img{
+    object-fit: contain;
+    width: 35vh;
+    height: 100%;
+    position: relative; /* Remova 'absolute' para ela seguir o fluxo da div */
+}
+
+
+.background-inicio-content {
+    position: relative;
+    z-index: 2;
+}
+/*Estilo do nav do Home*/
+.navbar-toggler {
+    appearance: none;
+    cursor: pointer;
+    width: 3.5rem;
+    height: 2.5rem;
+    color: white;
+    position: absolute;
+    top: 0.5rem;
+    right: 1rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba%28255, 255, 255, 0.55%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e") no-repeat center/1.75rem rgba(255, 255, 255, 0.1);
+}
+
+    .navbar-toggler:checked {
+        background-color: rgba(255, 255, 255, 0.5);
+    }
+
+.top-row {
+    height: 3.5rem;
+    background-color: rgba(0,0,0,0.4);
+}
+
+.navbar-brand {
+    font-size: 1.1rem;
+}
+
+.bi {
+    display: inline-block;
+    position: relative;
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-right: 0.75rem;
+    top: -1px;
+    background-size: cover;
+}
+
+.bi-house-door-fill-nav-menu {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='white' class='bi bi-house-door-fill' viewBox='0 0 16 16'%3E%3Cpath d='M6.5 14.5v-3.505c0-.245.25-.495.5-.495h2c.25 0 .5.25.5.5v3.5a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4a.5.5 0 0 0 .5-.5Z'/%3E%3C/svg%3E");
+}
+
+.bi-plus-square-fill-nav-menu {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='white' class='bi bi-plus-square-fill' viewBox='0 0 16 16'%3E%3Cpath d='M2 0a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2H2zm6.5 4.5v3h3a.5.5 0 0 1 0 1h-3v3a.5.5 0 0 1-1 0v-3h-3a.5.5 0 0 1 0-1h3v-3a.5.5 0 0 1 1 0z'/%3E%3C/svg%3E");
+}
+
+.bi-list-nested-nav-menu {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='white' class='bi bi-list-nested' viewBox='0 0 16 16'%3E%3Cpath fill-rule='evenodd' d='M4.5 11.5A.5.5 0 0 1 5 11h10a.5.5 0 0 1 0 1H5a.5.5 0 0 1-.5-.5zm-2-4A.5.5 0 0 1 3 7h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5zm-2-4A.5.5 0 0 1 1 3h10a.5.5 0 0 1 0 1H1a.5.5 0 0 1-.5-.5z'/%3E%3C/svg%3E");
+}
+
+.nav-item {
+    font-size: 0.9rem;
+    padding-bottom: 0.5rem;
+}
+
+    .nav-item:first-of-type {
+        padding-top: 1rem;
+    }
+
+    .nav-item:last-of-type {
+        padding-bottom: 1rem;
+    }
+
+    .nav-item .nav-link {
+        color: #d7d7d7;
+        background: none;
+        border: none;
+        border-radius: 4px;
+        height: 3rem;
+        display: flex;
+        align-items: center;
+        line-height: 3rem;
+        width: 100%;
+    }
+
+    .nav-item a.active {
+        background-color: rgba(255,255,255,0.37);
+        color: white;
+    }
+
+    .nav-item .nav-link:hover {
+        background-color: rgba(255,255,255,0.1);
+        color: white;
+    }
+
+.nav-scrollable {
+    display: none;
+}
+
+.navbar-toggler:checked ~ .nav-scrollable {
+    display: block;
+}
+
+@media (min-width: 641px) {
+    .navbar-toggler {
+        display: none;
+    }
+
+    .nav-scrollable {
+        /* Never collapse the sidebar for wide screens */
+        display: block;
+        /* Allow sidebar to scroll for tall menus */
+        height: calc(100vh - 3.5rem);
+        overflow-y: auto;
+    }
+}
+
+/*Estilo do navMenu*/
+/* Esconde o checkbox */
+.nav-toggle {
+    display: none;
+}
+
+/* Header fixo no topo */
+.navbar-header {
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    height: 60px;
+}
+
+/* Ícone hambúrguer com círculo branco */
+.nav-icon {
+    font-size: 1.5rem;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    background-color: white;
+    color: #fd440f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+    z-index: 1001; /* Acima do menu lateral */
+}
+/* Ícone hambúrguer sem o círculo branco */
+.nav-icon-navigation {
+    font-size: 1.5rem;
+    cursor: pointer;
+    width: 40px;
+    height: 40px;
+    color: #fd440f;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+    z-index: 1001; /* Acima do menu lateral */
+}
+
+/* Menu lateral */
+.nav-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 220px;
+    height: 100%;
+    background-color: #072f4d;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+    z-index: 1000;
+    padding-top: 60px;
+}
+
+
+
+/* Quando checkbox está marcado, mostra o menu */
+.nav-toggle:checked + .nav-menu {
+    transform: translateX(0);
+}
+
+.nav-menu nav {
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+}
+
+.nav-item {
+    margin-bottom: 1rem;
+}
+
+.nav-link {
+    color: white;
+    text-decoration: none;
+}
+
+.main-content {
+    margin-top: 60px;
+    padding: 1rem;
+}
+/*Opção de Pendente e concluido*/
+.status-toggle {
+    display: flex; /* Faz os itens ficarem lado a lado */
+    flex-direction: row; /* Garante que fiquem em linha */
+    justify-content: flex-start; /* Alinha ao início da linha */
+    align-items: center; /* Centraliza verticalmente os itens */
+    gap: 2vh; /* Espaçamento entre os itens */
+    margin-bottom: 5vh;
+    margin-top: 15vh;
+}
+
+    /* Regras gerais para links dentro de status-toggle para cor e remoção de sublinhado */
+    .status-toggle a {
+        color: white !important; /* Força a cor branca */
+        text-decoration: none !important; /* Força a remoção do sublinhado */
+        /* Removido o 'display: flex', 'flex-direction', etc. daqui */
+        /* Eles devem estar no container .status-toggle */
+    }
+
+        .status-toggle a.toggle-option,
+        .status-toggle a.toggle-option:link,
+        .status-toggle a.toggle-option:visited,
+        .status-toggle a.toggle-option:hover,
+        .status-toggle a.toggle-option:active {
+            font-size: 6.5vh; /* Mantenha o tamanho que você quer aqui */
+            opacity: 0.7;
+            transform: scale(1);
+            transition: font-size 0.1s, color 0.2s;
+            padding: 1vh 2vh;
+            cursor: pointer;
+            /* Certifique-se de que não há nenhuma propriedade de layout (display, flex, etc.) aqui */
+        }
+
+            .status-toggle a.toggle-option.selected {
+                color: whitesmoke !important;
+                font-weight: bold;
+                opacity: 1;
+                transform: scale(1.1);
+            }
+    /* Separador visual */
+    .status-toggle .separator {
+        color: white;
+        font-size: 4vh;
+        padding: 0 1vh;
+        opacity: 0.5;
+    }
+
+
+a, .btn-link {
+    color: white ;
+    text-decoration: none ;
+}
+
+.btn-primary {
+    border-radius: 15px;
+    color: white;
+    transition: all ease-in-out 0.3s;
+    background-color: #39b23e;
+    width: 25.2vh;
+    height: 8vh;
+    font-size:3vh;
+}
+
+    .btn-primary:hover {
+        background-color: #2f7032;
+    }
+    .btn-primary:active {
+        background-color: #2f7032;
+        border: 0 0 0;
+    }
+
+
+
+/*Botão da  pagina docente 'inserção manual*/
+.botao-insercao-manual {
+    color: white;
+    opacity: 0.95;
+    margin-right: 5px;
+    width: 24vh;
+    background-color: #3fc144;
+    padding: 1vh;
+    align-content: center;
+    transition: background-color 0.3s ease;
+    border: 0.1vh solid #c4bbbb;
+}
+    .botao-insercao-manual:hover {
+        background-color: #2fa837;
+        color: white;
+    }
+
+/*Botão dos login temporarios*/
+.botao-login-temporario {
+    align-self:start;
+    background-color: white;
+    color: #fd440f;
+    border: 0.2px solid;
+    border-radius: 50%;
+    width: 8vh;
+    height: 8vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    position:relative;
+    z-index: 1000;
+}
+
+    .botao-login-temporario:hover {
+        background-color: #e0d7d7;
+    }
+    
+/*Div que está o botão login temporario*/
+.container-temporario {
+        top: 2vh;
+        right: 5vh;
+        position: fixed;
+        z-index: 1000;
+}
+
+/*Botão de finalizar o login temporario*/
+.botao-finalizar-login-temporario {
+    align-self: start;
+    background-color: #2f9c33;
+    color: #fd440f;
+    border: 0.2px solid;
+    border-radius: 50%;
+    width: 8vh;
+    height: 8vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+    position: relative;
+    z-index: 1000;
+}
+
+    .botao-login-temporario:hover {
+        background-color: #e0d7d7;
+    }
+
+.content {
+    align-content: center;
+}
+
+/*#endif*/
+h1:focus {
+    outline: none;
+}
+
+.valid.modified:not([type=checkbox]) {
+    outline: 1px solid #26b050;
+}
+
+.invalid {
+    outline: 1px solid #e50000;
+}
+
+.validation-message {
+    color: #e50000;
+}
+
+#blazor-error-ui {
+    background: lightyellow;
+    bottom: 0;
+    box-shadow: 0 -1px 2px rgba(0, 0, 0, 0.2);
+    display: none;
+    left: 0;
+    padding: 0.6rem 1.25rem 0.7rem 1.25rem;
+    position: fixed;
+    width: 100%;
+    z-index: 1000;
+}
+
+    #blazor-error-ui .dismiss {
+        cursor: pointer;
+        position: absolute;
+        right: 0.75rem;
+        top: 0.5rem;
+    }
+
+.blazor-error-boundary {
+    background: url(data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTYiIGhlaWdodD0iNDkiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIG92ZXJmbG93PSJoaWRkZW4iPjxkZWZzPjxjbGlwUGF0aCBpZD0iY2xpcDAiPjxyZWN0IHg9IjIzNSIgeT0iNTEiIHdpZHRoPSI1NiIgaGVpZ2h0PSI0OSIvPjwvY2xpcFBhdGg+PC9kZWZzPjxnIGNsaXAtcGF0aD0idXJsKCNjbGlwMCkiIHRyYW5zZm9ybT0idHJhbnNsYXRlKC0yMzUgLTUxKSI+PHBhdGggZD0iTTI2My41MDYgNTFDMjY0LjcxNyA1MSAyNjUuODEzIDUxLjQ4MzcgMjY2LjYwNiA1Mi4yNjU4TDI2Ny4wNTIgNTIuNzk4NyAyNjcuNTM5IDUzLjYyODMgMjkwLjE4NSA5Mi4xODMxIDI5MC41NDUgOTIuNzk1IDI5MC42NTYgOTIuOTk2QzI5MC44NzcgOTMuNTEzIDI5MSA5NC4wODE1IDI5MSA5NC42NzgyIDI5MSA5Ny4wNjUxIDI4OS4wMzggOTkgMjg2LjYxNyA5OUwyNDAuMzgzIDk5QzIzNy45NjMgOTkgMjM2IDk3LjA2NTEgMjM2IDk0LjY3ODIgMjM2IDk0LjM3OTkgMjM2LjAzMSA5NC4wODg2IDIzNi4wODkgOTMuODA3MkwyMzYuMzM4IDkzLjAxNjIgMjM2Ljg1OCA5Mi4xMzE0IDI1OS40NzMgNTMuNjI5NCAyNTkuOTYxIDUyLjc5ODUgMjYwLjQwNyA1Mi4yNjU4QzI2MS4yIDUxLjQ4MzcgMjYyLjI5NiA1MSAyNjMuNTA2IDUxWk0yNjMuNTg2IDY2LjAxODNDMjYwLjczNyA2Ni4wMTgzIDI1OS4zMTMgNjcuMTI0NSAyNTkuMzEzIDY5LjMzNyAyNTkuMzEzIDY5LjYxMDIgMjU5LjMzMiA2OS44NjA4IDI1OS4zNzEgNzAuMDg4N0wyNjEuNzk1IDg0LjAxNjEgMjY1LjM4IDg0LjAxNjEgMjY3LjgyMSA2OS43NDc1QzI2Ny44NiA2OS43MzA5IDI2Ny44NzkgNjkuNTg3NyAyNjcuODc5IDY5LjMxNzkgMjY3Ljg3OSA2Ny4xMTgyIDI2Ni40NDggNjYuMDE4MyAyNjMuNTg2IDY2LjAxODNaTTI2My41NzYgODYuMDU0N0MyNjEuMDQ5IDg2LjA1NDcgMjU5Ljc4NiA4Ny4zMDA1IDI1OS43ODYgODkuNzkyMSAyNTkuNzg2IDkyLjI4MzcgMjYxLjA0OSA5My41Mjk1IDI2My41NzYgOTMuNTI5NSAyNjYuMTE2IDkzLjUyOTUgMjY3LjM4NyA5Mi4yODM3IDI2Ny4zODcgODkuNzkyMSAyNjcuMzg3IDg3LjMwMDUgMjY2LjExNiA4Ni4wNTQ3IDI2My41NzYgODYuMDU0N1oiIGZpbGw9IiNGRkU1MDAiIGZpbGwtcnVsZT0iZXZlbm9kZCIvPjwvZz48L3N2Zz4=) no-repeat 1rem/1.8rem, #b32121;
+    padding: 1rem 1rem 1rem 3.7rem;
+    color: white;
+}
+
+    .blazor-error-boundary::after {
+        content: "An error has occurred."
+    }
+
+
+/*Seve para garantir que o side bar sobreponha outros itens . Só serve para celulares*/
+.status-bar-safe-area {
+    display: none;
+}
+
+@supports (-webkit-touch-callout: none) {
+    .status-bar-safe-area {
+        display: flex;
+        position: sticky;
+        top: 0;
+        height: env(safe-area-inset-top);
+        background-color: black;
+        width: 100%;
+        z-index: 1;
+    }
+
+    .flex-column, .navbar-brand {
+        padding-left: env(safe-area-inset-left);
+    }
+}

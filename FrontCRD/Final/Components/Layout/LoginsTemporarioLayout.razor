@@ -1,0 +1,27 @@
+﻿@inherits LayoutComponentBase
+
+@inject NavigationManager Navigation
+
+<div>
+
+    <main>
+        <!-- Adicionando padding-top para garantir que a logo não sobreponha outros itens -->
+
+        <div class="container-temporario" style="top: 2vh; right: 5vh; position: fixed; z-index: 1000;">
+                <NavLink href="/" class="botao-login-temporario" title="Pagina inicial">
+                    <i class="fa-solid fa-house"></i>
+                </NavLink>
+        </div>
+
+        <article class="content px-4">
+            <div style="align-self:center; align-items:center;" class="Logo-branca-home">
+                <img src="/Imagens/LogoSenaiBranco..png" />
+            </div>
+            @Body
+        </article>
+    </main>
+</div>
+
+@code{
+
+}

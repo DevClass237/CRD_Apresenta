@@ -1,0 +1,96 @@
+﻿@page "/CadastrarSala"
+@using PocheteAPI.DTO
+@using PocheteAPI.Services
+@using Final.Components.Pages.Docentes
+@layout Final.Components.Layout.DocenteLayout
+@rendermode InteractiveServer
+
+<div class="popup-overlay">
+    <div class="popup-content-professor">
+        <div class="popup-header">
+            <img src="/Imagens/LogoSenaiBranco..png" class="logo-ajustada" alt="Logo Senai" />
+            <NavLink href="/TabelaDocente" class="nav-link fechar">
+                <i class="fas fa-times" style="color: ghostwhite;"></i>
+            </NavLink>
+        </div>
+
+        <div class="popup-center-text">
+            <div class="texto-registrar-login">
+                Registrar<br />Sala
+            </div>
+        </div>
+
+        <div class="container-style-professor">
+            <EditForm Model="salaModel" OnValidSubmit="RegistrarSalaAsync" FormName="SalaForm">
+                <DataAnnotationsValidator />
+
+                <InputNumber class="text-input-Professor" id="id" @bind-Value="salaModel.Id" placeholder="ID da Sala" />
+                <InputText class="text-input-Professor" id="nome" @bind-Value="salaModel.Nome" placeholder="Nome da Sala" />
+
+                <button class="btn-primary" type="submit">Registrar</button>
+
+                <ValidationSummary />
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+<TabelaDocentes />
+
+@code {
+    private SalaModel salaModel = new SalaModel();
+
+    [Inject]
+    private SalaService SalaService { get; set; } = default!;
+
+    [Inject]
+    private IJSRuntime JS { get; set; } = default!;
+
+    private async Task RegistrarSalaAsync()
+    {
+        if (salaModel.Id <= 0)
+        {
+            await JS.InvokeVoidAsync("alert", "Informe um ID válido para a sala!");
+            return;
+        }
+
+        if (string.IsNullOrWhiteSpace(salaModel.Nome))
+        {
+            await JS.InvokeVoidAsync("alert", "Informe o nome da sala!");
+            return;
+        }
+
+        try
+        {
+            var salaDto = new SalasDTO
+            {
+                Id = salaModel.Id,
+                Nome = salaModel.Nome
+            };
+
+            var (sucesso, mensagem) = await SalaService.CadastrarAsync(salaDto);
+
+            if (sucesso)
+            {
+                await JS.InvokeVoidAsync("alert", mensagem);
+                salaModel = new SalaModel(); // limpa o formulário
+                StateHasChanged();
+            }
+            else
+            {
+                await JS.InvokeVoidAsync("alert", mensagem);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            await JS.InvokeVoidAsync("alert", $"Erro inesperado: {ex.Message}");
+        }
+    }
+
+    public class SalaModel
+    {
+        public int Id { get; set; }  
+        public string Nome { get; set; } = string.Empty;
+    }
+}

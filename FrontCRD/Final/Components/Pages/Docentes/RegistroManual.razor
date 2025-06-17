@@ -1,0 +1,99 @@
+﻿@page "/RegistroManual"
+@using System.ComponentModel.DataAnnotations
+@using Final.Components
+@using PocheteAPI.DTO
+@using PocheteAPI.Services
+@rendermode InteractiveServer
+@inject NavigationManager Navigation
+@inject MovimentacaoService movimentacaoService
+@inject IJSRuntime JS
+@layout Final.Components.Layout.DocenteLayout
+
+<EditForm Model="novaMovimentacao" OnValidSubmit="RegistrarMovimentacao" OnInvalidSubmit="OnInvalidSubmit" FormName="FormMovimentacao">
+    <div class="popup-overlay">
+        <div class="popup-content-retirar">
+            <div class="popup-header">
+                <img src="/Imagens/LogoSenaiBranco..png" class="logo-ajustada" alt="Logo Senai" />
+
+                <NavLink href="/TabelaDocente" class="nav-link fechar">
+                    <i class="fas fa-times" style="color: ghostwhite;"></i>
+                </NavLink>
+            </div>
+
+            <div class="popup-center-text">
+                <div class="texto-retirar-chave">
+                    Digite sua matrícula<br /> e o número da sala
+                </div>
+            </div>
+
+            <div class="container-style-registrar">
+                <InputText @bind-Value="matriculaInput" class="text-input" placeholder="Digite sua Matrícula" />
+                <ValidationMessage For="@(() => matriculaInput)" />
+
+                <InputText @bind-Value="pocheteInput" class="text-input" placeholder="Digite a Sala" />
+                <ValidationMessage For="@(() => pocheteInput)" />
+
+                <button type="submit" class="btn-primary">Confirmar</button>
+            </div>
+
+            @if (!string.IsNullOrWhiteSpace(mensagemErro))
+            {
+                <div class="alerta">@mensagemErro</div>
+            }
+        </div>
+    </div>
+</EditForm>
+
+<TabelaDocentes />
+
+@code {
+    private MovimentacaoDTO novaMovimentacao = new MovimentacaoDTO();
+    private string matriculaInput = string.Empty;
+    private string pocheteInput = string.Empty;
+    private string mensagemErro;
+
+    private void OnInvalidSubmit(EditContext editContext)
+    {
+        mensagemErro = "Por favor, preencha a matrícula do professor e o número da pochete.";
+    }
+
+    private async Task RegistrarMovimentacao()
+    {
+        mensagemErro = "";
+
+        // Convertendo matriculaInput de string para int
+        if (!int.TryParse(matriculaInput, out int matricula) || matricula <= 0)
+        {
+            mensagemErro = "Matrícula inválida ou menor que zero.";
+            return;
+        }
+
+        // Validação para garantir que PocheteId não esteja vazio ou nulo
+        if (string.IsNullOrWhiteSpace(pocheteInput))
+        {
+            mensagemErro = "Número da pochete não pode ser vazio.";
+            return;
+        }
+
+        // Preenche o DTO com os valores
+        novaMovimentacao.ProfessorMatricula = matricula;
+        novaMovimentacao.PocheteId = pocheteInput; // Aqui usamos diretamente o valor da string
+        novaMovimentacao.DataRetirada = DateTime.Now;
+
+        var (sucesso, resposta) = await movimentacaoService.RegistrarRetiradaAsync(novaMovimentacao);
+
+        if (!sucesso)
+        {
+            mensagemErro = resposta;
+        }
+        else
+        {
+            mensagemErro = "";
+            novaMovimentacao = new MovimentacaoDTO();
+            matriculaInput = string.Empty;
+            pocheteInput = string.Empty;
+            Navigation.NavigateTo("/TabelaDocente", forceLoad: true);
+        }
+    }
+
+}

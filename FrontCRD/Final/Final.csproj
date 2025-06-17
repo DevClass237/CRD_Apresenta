@@ -1,0 +1,42 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="Components\Pages\NovaPasta\**" />
+    <Compile Remove="Components\Pages\Pages_Docente\**" />
+    <Content Remove="Components\Pages\NovaPasta\**" />
+    <Content Remove="Components\Pages\Pages_Docente\**" />
+    <EmbeddedResource Remove="Components\Pages\NovaPasta\**" />
+    <EmbeddedResource Remove="Components\Pages\Pages_Docente\**" />
+    <None Remove="Components\Pages\NovaPasta\**" />
+    <None Remove="Components\Pages\Pages_Docente\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Remove="Components\BotaoPendenteConcluido.razor" />
+    <Content Remove="Components\Layout\Component.razor" />
+    <Content Remove="wwwroot\Imagens\LogoSenaiAzul.png" />
+    <Content Remove="wwwroot\Imagens\LogoSenaiBranco.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.15" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.15">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="MudBlazor" Version="8.7.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\PocheteAPI\PocheteAPI.csproj" />
+    <ProjectReference Include="..\..\PocheteDados\PocheteDados.csproj" />
+    <ProjectReference Include="..\..\PocheteModelos\PocheteModelos.csproj" />
+  </ItemGroup>
+
+</Project>

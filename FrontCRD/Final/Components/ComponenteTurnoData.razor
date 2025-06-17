@@ -1,0 +1,26 @@
+﻿@page "/ComponenteTurnoData"
+
+<div class="borda-turno">
+
+    <div class="estilo-data-select">
+        <label for="turno">Turno</label>
+        <select id="turno" @bind="TurnoSelecionado">
+            <option value="Noturno">Noturno</option>
+            <option value="Matutino">Matutino</option>
+            <option value="Vespertino">Vespertino</option>
+        </select>
+    </div>
+
+    <span class="estilo-data-select">@DataAtual.ToString("dd 'de' MMMM 'de' yyyy")</span>
+</div>
+
+@code {
+    public string TurnoSelecionado { get; set; } = DateTime.Now.Hour switch
+    {
+        >= 6 and < 13 => "Matutino",
+        >= 13 and < 19 => "Vespertino",
+        _ => "Noturno"
+    };
+
+    public DateTime DataAtual { get; set; } = DateTime.Now;
+}

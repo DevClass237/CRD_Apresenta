@@ -1,0 +1,63 @@
+﻿@page "/HomeEditor"
+
+<PageTitle>Home</PageTitle>
+@using System.Collections.Generic;
+@layout Final.Components.Layout.EditorLayout;
+
+
+<ComponenteTurnoData />
+
+<div class="table-container">
+    <div class="header-row">
+        <div class="header-cell">Sala</div>
+        <div class="header-cell">Laboratório</div>
+        <div class="header-cell">Docente</div>
+        <div class="header-cell">Curso</div>
+        <div class="header-cell">Turma</div>
+    </div>
+
+    <div class="table-body">
+        @foreach (var item in Dados)
+        {
+            <div class="body-cell">@item.Sala</div>
+            <div class="body-cell">@item.Laboratorio</div>
+            <div class="body-cell">@item.Docente</div>
+            <div class="body-cell">@item.Curso</div>
+            <div class="body-cell">@item.Turma</div>
+
+
+        }
+    </div>
+</div>
+
+@code {
+
+
+    public class LinhaTabela
+    {
+
+        public LinhaTabela(string sala, string laboratorio, string docente, string curso, string turma)
+        {
+            Sala = sala;
+            Laboratorio = laboratorio;
+            Docente = docente;
+            Curso = curso;
+            Turma = turma;
+
+        }
+
+        public string Sala { get; set; }
+        public string Laboratorio { get; set; }
+        public string Docente { get; set; }
+        public string Curso { get; set; }
+        public string Turma { get; set; }
+    }
+
+    public List<LinhaTabela> Dados = new()
+    {
+        new LinhaTabela ("A101", "Lab 1", "Prof. Ana", "Informática", "TI1" ),
+        new LinhaTabela ("B202", "Lab 2", "Prof. João", "Redes", "R2" ),
+        new LinhaTabela ("C303", "Lab 3", "Prof. Maria", "Administração", "ADM1" ),
+
+    };
+}

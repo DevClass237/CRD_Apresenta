@@ -1,0 +1,95 @@
+﻿@page "/LoginsTempConcluido"
+@layout Components.Layout.LoginsTemporarioLayout;
+@using Final.Components;
+
+
+<div class="status-toggle">
+    <NavLink href="/LoginsTemp" class="toggle-option">Pendente</NavLink>
+    <span class="separator">|</span>
+    <NavLink class="toggle-option selected"> Concluido</NavLink>
+
+</div>
+
+
+<ComponenteTurnoData />
+
+    <div class="table-container">
+        <div class="header-row">
+            <div class="header-cell">Sala</div>
+            <div class="header-cell">Laboratório</div>
+            <div class="header-cell">Docente</div>
+            <div class="header-cell">Hora Inicio</div>
+            <div class="header-cell">Hora Final</div>
+        </div>
+
+        <div class="table-body">
+            @foreach (var item in Dados)
+            {
+                <div class="body-cell">@item.Sala</div>
+                <div class="body-cell">@item.Laboratorio</div>
+                <div class="body-cell">@item.Docente</div>
+                <div class="body-cell">@item.HoraInicio</div>
+                <div class="body-cell">@item.HoraFinal</div>
+            }
+        </div>
+    </div>
+
+@code {
+    private enum Status
+    {
+        Pendente,
+        Concluido
+    }
+
+    public class LinhaTabela
+    {
+
+        public LinhaTabela(string sala, string laboratorio, string docente, string horaInicio, string horaFinal)
+        {
+            Sala = sala;
+            Laboratorio = laboratorio;
+            Docente = docente;
+            HoraInicio = horaInicio;
+            HoraFinal = horaFinal;
+
+        }
+
+        public string Sala { get; set; }
+        public string Laboratorio { get; set; }
+        public string Docente { get; set; }
+        public string HoraInicio { get; set; }
+        public string HoraFinal { get; set; }
+    }
+
+    public List<LinhaTabela> Dados = new()
+    {
+        new LinhaTabela ("A101", "Lab 1", "Prof. Ana", "14:00", "14:30" ),
+        new LinhaTabela ("B202", "Lab 2", "Prof. João", "17:00", "17:40" ),
+        new LinhaTabela ("C303", "Lab 3", "Prof. Maria", "13:10", "14:10" ),
+
+    };
+
+    private Status StatusSelecionado = Status.Pendente;
+    public void SelecionarPendente()
+    {
+        if (StatusSelecionado != Status.Pendente)
+        {
+            StatusSelecionado = Status.Pendente;
+            StateHasChanged();
+        }
+    }
+
+    public void SelecionarConcluido()
+    {
+        if (StatusSelecionado != Status.Concluido)
+        {
+            StatusSelecionado = Status.Concluido;
+            StateHasChanged();
+        }
+    }
+
+    private string GetClass(Status status)
+    {
+        return status == StatusSelecionado ? "toggle-option selected" : "toggle-option";
+    }
+}

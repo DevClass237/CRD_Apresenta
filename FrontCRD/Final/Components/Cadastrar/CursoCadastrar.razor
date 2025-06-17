@@ -1,0 +1,94 @@
+﻿@page "/CursoCadastrar"
+@using PocheteAPI.Services
+@using PocheteAPI.DTO
+@using Final.Components.Pages.Docentes
+@layout Final.Components.Layout.DocenteLayout
+@rendermode InteractiveServer
+
+<div class="popup-overlay">
+    <div class="popup-content-professor"> <!-- mesmo estilo -->
+        <div class="popup-header">
+            <img src="/Imagens/LogoSenaiBranco..png" class="logo-ajustada" alt="Logo Senai" />
+            <NavLink href="/TabelaDocente" class="nav-link fechar">
+                <i class="fas fa-times" style="color: ghostwhite;"></i>
+            </NavLink>
+        </div>
+
+        <div class="popup-center-text">
+            <div class="texto-registrar-login"> <!-- mesmo estilo -->
+                Registrar<br />Curso
+            </div>
+        </div>
+
+        <div class="container-style-professor"> <!-- mesmo estilo -->
+            <EditForm Model="cursoModel" OnValidSubmit="RegistrarCursoAsync" FormName="CursoForm">
+                <DataAnnotationsValidator />
+
+                <InputText class="text-input-Professor" id="nome" @bind-Value="cursoModel.Nome" placeholder="Nome do Curso" />
+
+                <InputNumber class="text-input-Professor" id="professorMatricula" @bind-Value="cursoModel.ProfessorMatricula" placeholder="Matrícula do Professor" />
+
+                <InputNumber class="text-input-Professor" id="turmaId" @bind-Value="cursoModel.TurmaId" placeholder="ID da Turma" />
+
+                <button class="btn-primary" type="submit">Registrar</button>
+
+                <ValidationSummary />
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+<TabelaDocentes/>
+
+@code {
+    // Modelo para o formulário, alinhado com o DTO, menos o Id pois cadastro é novo
+    private CursoModel cursoModel = new CursoModel();
+
+    [Inject]
+    private CursoService CursoService { get; set; } = default!;
+
+    [Inject]
+    private IJSRuntime JS { get; set; } = default!;
+
+    private async Task RegistrarCursoAsync()
+    {
+        if (string.IsNullOrWhiteSpace(cursoModel.Nome) || cursoModel.ProfessorMatricula <= 0 || cursoModel.TurmaId <= 0)
+        {
+            await JS.InvokeVoidAsync("alert", "Nome do curso, matrícula do professor e ID da turma são obrigatórios e devem ser válidos!");
+            return;
+        }
+
+        try
+        {
+            var cursoDto = new CursosDTO
+            {
+                Nome = cursoModel.Nome
+            };
+
+            var (sucesso, mensagem) = await CursoService.CadastrarAsync(cursoDto);
+
+            if (sucesso)
+            {
+                await JS.InvokeVoidAsync("alert", mensagem);
+                cursoModel = new CursoModel();
+                StateHasChanged();
+            }
+            else
+            {
+                await JS.InvokeVoidAsync("alert", mensagem);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine(ex.Message);
+            await JS.InvokeVoidAsync("alert", $"Erro inesperado: {ex.Message}");
+        }
+    }
+
+    public class CursoModel
+    {
+        public string Nome { get; set; } = string.Empty;
+        public int ProfessorMatricula { get; set; }
+        public long TurmaId { get; set; }
+    }
+}

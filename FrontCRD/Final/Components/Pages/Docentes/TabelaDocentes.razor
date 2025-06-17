@@ -1,0 +1,68 @@
+﻿@page "/TabelaDocente"
+@using System.Collections.Generic
+@using PocheteModelos.Modelo
+@using Final.Components
+@using PocheteAPI.Services
+@inject DadosService dadosService
+@layout Final.Components.Layout.EditorLayout;
+
+
+<ComponentTurnoDataDocente />
+
+<div class="table-container">
+    <div class="header-row">
+        <div class="header-cell">Sala</div>
+        <div class="header-cell">Laboratório</div>
+        <div class="header-cell">Docente</div>
+        <div class="header-cell">Curso</div>
+        <div class="header-cell">Turma</div>
+        <div class="header-cell">Retirada</div>
+    </div>
+
+    <div class="table-body-Docente">
+        @if (Dados == null || Logins == null) {
+            <div>Carregando dados...</div>
+        }
+        else {
+            @foreach (var item in Dados) {
+                var loginInfo = Logins.FirstOrDefault(l =>
+                l.Sala == item.Sala &&
+                l.Laboratorio == item.Laboratorio &&
+                l.DocenteChave == item.Docente);
+
+                <div class="body-cell">@item.Sala</div>
+                <div class="body-cell">@item.Laboratorio</div>
+                <div class="body-cell">@item.Docente</div>
+                <div class="body-cell">@item.Curso</div>
+                <div class="body-cell">@item.Turma</div>
+                <div class="body-cell retirada-cell @GetRetiradaClass(loginInfo, item.Docente)">
+                    @if (loginInfo != null) {
+                        <span>@loginInfo.DataHoraRetirada.ToString("HH:mm")</span>
+                    }
+                    else {
+                        <span>Não Retirada</span>
+                    }
+                </div>
+            }
+        }
+    </div>
+</div>
+
+@code {
+    public List<LinhaTabela>? Dados { get; set; }
+    public List<Login>? Logins { get; set; }
+
+    protected override async Task OnInitializedAsync() {
+        Dados = await dadosService.ObterDadosAsync();
+        Logins = await dadosService.ObterLoginsAsync();
+    }
+
+    private string GetRetiradaClass(Login? loginInfo, string docenteCadastrado) {
+        if (loginInfo == null)
+            return "retirada-cinza";
+        else if (loginInfo.NomeDocenteRetirada == docenteCadastrado)
+            return "retirada-verde";
+        else
+            return "retirada-vermelha";
+    }
+}

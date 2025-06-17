@@ -1,0 +1,147 @@
+﻿@page "/CadastrarPochete"
+@using PocheteAPI.DTO
+@using PocheteAPI.Services
+@using Final.Components.Pages.Docentes
+@layout Final.Components.Layout.DocenteLayout
+@rendermode InteractiveServer
+@inject SalaService SalaService
+@inject IJSRuntime JS
+@inject PocheteService PocheteService
+
+<div class="popup-overlay">
+    <div class="popup-content-professor">
+        <div class="popup-header">
+            <img src="/Imagens/LogoSenaiBranco..png" class="logo-ajustada" alt="Logo Senai" />
+            <NavLink href="/TabelaDocente" class="nav-link fechar">
+                <i class="fas fa-times" style="color: ghostwhite;"></i>
+            </NavLink>
+        </div>
+
+        <div class="popup-center-text">
+            <div class="texto-registrar-login">
+                Registrar<br />Pochete
+            </div>
+        </div>
+
+        <div class="container-style-professor">
+            <EditForm Model="pocheteModel" OnValidSubmit="RegistrarPocheteAsync" FormName="PocheteForm">
+                <DataAnnotationsValidator />
+
+                <InputSelect class="text-input-Professor" id="sala" @bind-Value="pocheteModel.SalaId">
+                    <option value="0">Selecione uma sala...</option>
+                    @foreach (var sala in salas)
+                    {
+                        <option value="@sala.Id">@sala.Nome</option>
+                    }
+                </InputSelect>
+
+                <InputText class="text-input-Professor" id="idToken" @bind-Value="pocheteModel.IdToken" placeholder="ID Token" />
+
+                <button class="btn-primary" type="submit">Registrar</button>
+
+                <ValidationSummary />
+            </EditForm>
+        </div>
+    </div>
+</div>
+
+<TabelaDocentes/>
+
+@code {
+    // Modelo para armazenar os dados do formulário de pochete
+    private PocheteModel pocheteModel = new PocheteModel();
+
+    // Lista de salas para popular o dropdown
+    private List<SalasDTO> salas = new List<SalasDTO>();
+
+    // Flag para controlar quando exibir o alerta
+    private bool exibirAlerta = false;
+
+    // Mensagem que será exibida no alerta JavaScript
+    private string mensagemAlerta = "";
+
+    // Método chamado na inicialização do componente para carregar as salas
+    protected override async Task OnInitializedAsync()
+    {
+        salas = await SalaService.ListarAsync();
+    }
+
+    // Método que é chamado quando o formulário é enviado com sucesso
+    private async Task RegistrarPocheteAsync()
+    {
+        // Validação: se nenhuma sala foi selecionada, configura mensagem de alerta e sinaliza para exibir
+        if (pocheteModel.SalaId == 0)
+        {
+            mensagemAlerta = "Por favor, selecione uma sala.";
+            exibirAlerta = true;
+
+            // Solicita a re-renderização do componente para que o alerta seja exibido no OnAfterRenderAsync
+            StateHasChanged();
+            return;
+        }
+
+        // Validação: se o campo IdToken está vazio, configura mensagem de alerta e sinaliza para exibir
+        if (string.IsNullOrWhiteSpace(pocheteModel.IdToken))
+        {
+            mensagemAlerta = "Informe o ID Token da pochete.";
+            exibirAlerta = true;
+            StateHasChanged();
+            return;
+        }
+
+        try
+        {
+            // Cria o DTO com os dados do formulário para enviar ao serviço
+            var dto = new PochetesDTO
+            {
+                SalaId = pocheteModel.SalaId,
+                IdToken = pocheteModel.IdToken.Trim()
+            };
+
+            // Chama o serviço para cadastrar a pochete e recebe resultado
+            var (sucesso, mensagem) = await PocheteService.CadastrarAsync(dto);
+
+            // Define a mensagem para exibir ao usuário (sucesso ou erro)
+            mensagemAlerta = mensagem;
+
+            // Sinaliza para exibir o alerta na próxima renderização
+            exibirAlerta = true;
+
+            if (sucesso)
+            {
+                // Se cadastro foi sucesso, limpa o formulário
+                pocheteModel = new PocheteModel();
+            }
+
+            // Solicita re-renderização para disparar OnAfterRenderAsync
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            // Em caso de exceção, configura mensagem de erro e sinaliza para exibir alerta
+            mensagemAlerta = $"Erro inesperado: {ex.Message}";
+            exibirAlerta = true;
+            StateHasChanged();
+        }
+    }
+
+    // Método executado após a renderização do componente
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        // Se a flag de alerta estiver verdadeira, exibe o alerta JS e reseta a flag
+        if (exibirAlerta)
+        {
+            exibirAlerta = false;
+
+            // Executa a chamada JS para exibir o alerta com a mensagem configurada
+            await JS.InvokeVoidAsync("alert", mensagemAlerta);
+        }
+    }
+
+    // Classe para representar o modelo do formulário de pochete
+    public class PocheteModel
+    {
+        public long SalaId { get; set; }          // Id da sala selecionada
+        public string IdToken { get; set; } = string.Empty;  // ID token da pochete
+    }
+}

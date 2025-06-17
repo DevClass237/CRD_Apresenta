@@ -1,0 +1,67 @@
+﻿@page "/"
+@using PocheteAPI.Services;
+@using PocheteAPI.DTO;
+@rendermode InteractiveServer
+@inject AdminService AdminService
+@inject IJSRuntime JS
+@inject NavigationManager navigationManager
+
+@layout Components.Layout.LoginLayout
+
+<div class="background-login">
+    <div class="background-inicio-content">
+        <div class="container-style">
+
+            <div class="Logo-branca">
+                <img src='/Imagens/LogoSenaiBranco.png' />
+            </div>
+
+            <InputText class="text-input" id="nome" @bind-Value="nome" placeholder="Digite seu Nome" />
+            <InputText class="text-input" id="senha" @bind-Value="senha" placeholder="Digite sua Senha" />
+
+            <button type="button" class="btn-primary" @onclick="FazerLoginCadastro" disabled="@carregando">
+                @(carregando ? "Verificando..." : "Entrar")
+            </button>
+
+            @if (!string.IsNullOrEmpty(mensagem)) {
+                <p style="color:@(mensagem.Contains("sucesso") ? "white" : "red")">@mensagem</p>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    private string? nome;
+    private string? senha;
+    private string? mensagem;
+    private bool carregando = false;
+
+    private async Task FazerLoginCadastro() {
+        await JS.InvokeVoidAsync("console.log", "Função FazerLogin chamada");
+        carregando = true;
+        mensagem = string.Empty;
+
+        if (string.IsNullOrWhiteSpace(nome) || string.IsNullOrWhiteSpace(senha)) {
+            mensagem = "Preencha todos os campos.";
+            carregando = false;
+            return;
+        }
+
+        // 1. Tentar fazer login
+        var (sucessoLogin, admin, msgLogin) = await AdminService.LoginAsync(nome!, senha!);
+
+        if (sucessoLogin) {
+            mensagem = "Login realizado com sucesso!";
+            navigationManager.NavigateTo("/TabelaDocente"); // ou outra rota após login
+        }
+        else {
+            mensagem = "⚠️ Usuário ou senha inválidos!";
+        }
+
+        carregando = false;
+        StateHasChanged();
+        await Task.Delay(3000);
+        mensagem = string.Empty;
+        StateHasChanged();
+    }
+}
